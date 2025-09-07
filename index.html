@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tracker de Recaudación</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .bar-container {
+      width: 80%;
+      max-width: 600px;
+      height: 40px;
+      background: #e0e0e0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4cafef, #3b82f6);
+      border-radius: 20px 0 0 20px;
+      transition: width 0.1s ease;
+    }
+
+    .bar-text {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #1f2937;
+    }
+  </style>
+</head>
+<body>
+  <h1>Our Beloved Luna</h1>
+  <div class="bar-container">
+    <div class="bar-fill" id="progress-bar"></div>
+  </div>
+  <div class="bar-text" id="progress-text"></div>
+
+  <script>
+    // -------------------------
+    // CONFIGURACIÓN
+    // -------------------------
+    const goal = 600;   // Meta total
+    const raised = 149; // Dinero recaudado actual
+    let current = 0;    // Valor inicial
+
+    // -------------------------
+    // ELEMENTOS HTML
+    // -------------------------
+    const bar = document.getElementById("progress-bar");
+    const text = document.getElementById("progress-text");
+
+    // -------------------------
+    // FUNCIÓN PARA ACTUALIZAR
+    // -------------------------
+    function updateProgress(amount) {
+      let percent = Math.min(amount / goal, 1) * 100;
+      bar.style.width = percent + "%";
+      text.textContent = `Recaudado: $${amount} de $${goal} (${Math.round(percent)}%)`;
+    }
+
+    // -------------------------
+    // ANIMACIÓN DESDE 0 HASTA RAISED
+    // -------------------------
+    const step = Math.ceil(raised / 100); // tamaño de paso
+    const interval = setInterval(() => {
+      if (current < raised) {
+        current += step;
+        if (current > raised) current = raised; // no pasarse
+        updateProgress(current);
+      } else {
+        clearInterval(interval); // detener animación
+      }
+    }, 30); // velocidad en ms
+  </script>
+</body>
+</html>
